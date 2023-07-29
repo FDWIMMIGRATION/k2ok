@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>_Inicio_app</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+</head>
+<body class="body_2">
+    <h1 style = "color:aliceblue; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Login FDW</h1>
+    <form action="/login" method="POST">
+        <label>
+            <input id="fUsuario" type="text" name="fUsuario" placeholder="Usuario" style=" border-radius: 30px;">
+                <span>Ingrese su Usuario</span>
+        </label>
+        <label>
+            <input id="fContraseña" type="password" name="fContraseña" placeholder="Contraseña"  style=" border-radius: 30px;">
+                <span>Ingrese su Contraseña</span>
+        </label>
+        <input type="submit" value="Ingresar"  style=" border-radius: 30px;"> 
+    </form>
+    <br>
+    <br>
+    <h4 style="color:white; width: 35%; background-color: #ff2929a2; border-radius: 10px;">{{ mensaje_error }} </h4>
+    <script>
+    // Obtener los campos de entrada de usuario y contraseña
+    var usuarioInput = document.getElementById("fUsuario");
+    var contraseñaInput = document.getElementById("fContraseña");
+
+    // Agregar controlador de eventos para el evento keydown al campo de entrada de usuario
+    usuarioInput.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) { // Si se presiona la tecla Enter
+            event.preventDefault(); // Evitar que se envíe el formulario
+            contraseñaInput.focus(); // Enfocar el campo de entrada de contraseña
+        }
+    });
+    </script>
+</body>
+</html>

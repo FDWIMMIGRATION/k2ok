@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WhatsApp Web Template</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/whatsapp.css">
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 99vh;
+        }
+        </style>
+    </head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="google" value="notranslate"/>
+    <body>
+        <div class="conversation-list">
+            <div class="conversation active">
+                <div class="form-block1" >
+                    <a type="submit" name="cerrar" href="{{ url_for('logout') }}" class="boton_cerrar">Cerrar APP</a>
+                    <a type="submit" href="/prueba3?{{ usuario }}" class="boton_regresar">Administrativo</a>
+                </div>
+                <div class="form-block3" style="display: block;">
+                    <span>Crear formularios</span>
+                </div>
+                <div class="form-block_2" style="display: block;">
+                    <form action="{{ url_for('home_3') }}" method="POST">
+                        Nombre del formulario: <input type="text" name="nombre_form"><br><br>
+                        <div id="casillas"></div><br>
+                        <button type="button" onclick="agregarCasilla()">Agregar pregunta</button><br>
+                        <button type="submit" value="Enviar">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="part-4">
+            <div class="chat-window">
+                <div class="card_2_panel" style="margin-right: 1px;">
+                    <div class="card-header">
+                        <h2 style="margin-top: 0px; margin-bottom: 0px;">Formulario disponibles</h2>
+                    </div>
+
+                    {% for nombre_formulario, formularios_a in form_1.items() %}
+                        <div class="chat-container">
+                            <div class="select-wrapper2">
+                                <div class="chat-message incoming">
+                                    <span class="message"><strong>{{ nombre_formulario }}</strong></span>
+                                </div>
+                                <form id="my-form" method="POST" action="{{ url_for('home_3') }}">
+                                    <input type="hidden" name="mensaje" value="{{ nombre_formulario }}">
+                                    {% for DATA in formularios_a %}
+                                        <input type="hidden" name="index_cols" value="{{ DATA[1] }}">
+                                    {% endfor %}
+                                    <select name="tipo_respuesta_etiqueta_modificar">
+                                        <option value="">Modirficar</option>
+                                        <option value="Eliminar">Eliminar</option>
+                                    </select>
+                                    <div>
+                                        <button type="submit" name="ok_button_etiqueta_editar" class="button_ok"  id="double_click_button">OK </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div> 
+            </div>    
+        </div>
+
+        <div class="conversation-list">
+            <div class="conversation active">
+                <div class="form-block3" style="display: block;">
+                    <span>Crear usuarios</span>
+                </div>
+                <div class="form-block_2" style="display: block;">
+                    <form id="my-form" method="POST" action="{{ url_for('home_3') }}">
+                        Nombre del funcionario: <input type="text" name="nombre"><br>
+                        Documento: <input type="text" name="Documento"><br>
+                        Celular: <input type="text" name="Celular"><br>
+                        Correo: <input type="text" name="Correo"><br>
+                        Actividad:
+                        <select name="Actividad" style="width: 95%; background-color: rgba(155, 231, 140, 0.767); border: 0px; border-radius: 3px; margin-right: 12px;" name="r__modificar">
+                            <option value="">Selecione:</option>
+                            <option value="SOPORTE">SOPORTE</option>
+                            <option value="PRE_CONSULTORIA">PRE CONSULTORIA</option>
+                            <option value="CONSULTORIA">CONSULTORIA</option>
+                            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                            <option value="DESARROLLADOR">DESARROLLADOR</option>
+                        </select><br>
+                        Permisos:
+                        <select name="Permisos" style="width: 95%; background-color: rgba(155, 231, 140, 0.767); border: 0px; border-radius: 3px; margin-right: 12px;" name="r__modificar">
+                            <option value="">Selecione:</option>
+                            <option value="SOPORTE">SOPORTE</option>
+                            <option value="CONSULTORIA">CONSULTORIA</option>
+                            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                            <option value="DESARROLLADOR">DESARROLLADOR</option>
+                        </select><br>
+                        Agenda:
+                        <select name="Agenda" style="width: 95%; background-color: rgba(155, 231, 140, 0.767); border: 0px; border-radius: 3px; margin-right: 12px;" name="r__modificar">
+                            <option value="">Selecione:</option>
+                            <option value="SI">SI</option>
+                            <option value="NO">NO</option>
+                            <option value="DESARROLLADOR">DESARROLLADOR</option>
+                        </select><br>
+                        Pais: <input type="text" name="Pais"><br>
+                        Area:
+
+                        <select name="Area" style="width: 95%; background-color: rgba(155, 231, 140, 0.767); border: 0px; border-radius: 3px; margin-right: 12px;" name="r__modificar">
+                            <option value="">Selecione:</option>
+                            <option value="CALL_CENTER">CALL CENTER</option>
+                            <option value="CONSULTORIA">CONSULTORIA</option>
+                            <option value="CALL_CENTER_CONSULTORIA">CALL CENTER Y CONSULTORIA</option>
+                            <option value="TODO">CALL CENTER CONSULTORIA CONFIGURACION</option>
+                        </select><br>
+
+                        Contraseña: <input type="text" name="Contraseña"><br>
+                        <button type="submit" name="Enviar_crear_funcionario" value="Enviar_crear_fucnionario">Crear funcionario</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="part-4">
+            <div class="chat-window">
+                <div class="card_2_panel" style="margin-right: 1px;">
+                    <div class="card-header">
+                        <h2 style="margin-top: 0px; margin-bottom: 0px;">Usuarios activos</h2>
+                    </div>
+
+                    {% for nombre_formulario, formularios_a in nombre_pers.items() %}
+                        <div class="chat-container">
+                            <div class="select-wrapper2">
+                                <div class="chat-message incoming">
+                                    <span class="message"><strong>{{ formularios_a[1] }}</strong></span>
+                                </div>
+                                <form id="my-form" method="POST" action="{{ url_for('home_3') }}">
+                                    <input type="hidden" name="usuario_elm" value="{{ formularios_a[1] }}">
+                                    <input type="hidden" name="index_col_" value="{{ formularios_a[0] }}">
+                                    <select name="tipo_respuesta_etiqueta_modificar_1">
+                                        <option value="">Modirficar</option>
+                                        <option value="Eliminar">Eliminar</option>
+                                    </select>
+                                    <div>
+                                        <button type="submit" name="ok_button_etiqueta_elim" class="button_ok"  id="double_click_button">OK </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+        <script>
+            function agregarCasilla() {
+                var div = document.createElement("div");
+                div.innerHTML = '<input type="text" name="casillas[]">';
+                document.getElementById("casillas").appendChild(div);
+            }
+        </script>
+    </body>
+</html>

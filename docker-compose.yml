@@ -1,0 +1,36 @@
+version: "3"
+services:
+  app:
+    image: appfw
+    container_name: FWAPP
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    command: python main.py
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    container_name: db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      #- MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      #- MYSQL_DATABASE: ${DB_BASE}
+      #- MYSQL_ROOT_PASSWORD=${DB_PASS}
+      #- MYSQL_DATABASE=${DB_BASE}
+      - MYSQL_ROOT_PASSWORD=****ADM1
+      - MYSQL_DATABASE=whatsapp_messages
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./whatsapp_messages.sql:/docker-entrypoint-initdb.d/whatsapp_messages.sql
+    ports:
+      - "3307:3306"
+volumes:
+  mysql_data: 

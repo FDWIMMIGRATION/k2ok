@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WhatsApp Web Template</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/whatsapp.css">
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 99vh;
+        }
+        </style>
+    </head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="google" value="notranslate"/>
+    <body>
+        <div class="conversation-list">
+            <div class="conversation active">
+                <div class="form-block1" >
+                    <a type="submit" name="cerrar" href="{{ url_for('logout') }}" class="boton_cerrar">Cerrar APP</a>
+                    <a type="submit" href="/prueba3?{{ usuario }}" class="boton_regresar">Administrativo</a>
+                </div>
+            </div>
+        </div>
+        <div class="part-4">
+            <div class="chat-window">
+                <div class="card_2_panel" style="margin-right: 1px;">
+                    <div class="card-header">
+                        <h2 style="margin-top: 0px; margin-bottom: 0px;">Entrenamiento de respuestas</h2>
+                    </div>
+                    {% for mensaje_indx, mensaje_mostr in form_1.items() %}
+                        <div class="chat-container">
+                            <div class="select-wrapper2">
+                                <div class="chat-message incoming" style="display: block;">
+                                    <span class="message"><strong>{{ mensaje_indx }}</strong></span>
+                                    <div class="form-block_ad" style="display: block;">
+                                        <form action="{{ url_for('ENTRENAMSJ') }}" method="POST">
+                                            <input type="hidden" name="index_nombre_form" value="{{ mensaje_indx }}">
+                                            <button type="button" onclick="agregarCasilla('casillas_{{ mensaje_indx }}')">Ag</button>
+                                            <button type="submit" name="enviar_confirmar" value="Enviar">Ent</button>
+                                            <div id="casillas_{{ mensaje_indx }}" style="display: inline-block;">
+                                                <!-- Respuesta input fields will be added here -->
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div> 
+            </div>    
+        </div>
+
+
+        <div class="part-4">
+            <div class="chat-window">
+                <div class="card_2_panel" style="margin-right: 1px;">
+                    <div class="card-header">
+                        <h2 style="margin-top: 0px; margin-bottom: 0px;">Respuestas entrenadas</h2>
+                    </div>
+                    {% for mensaje_indx, mensaje_mostr in form_7.items() %}
+                        <div class="chat-container">
+                            <div class="select-wrapper2">
+                                <div class="chat-message incoming" style="display: block;">
+                                    <span class="message"><strong>{{ mensaje_indx }}</strong></span>
+                                    <div class="form-block_ad" style="display: block;">
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div> 
+            </div>    
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+
+        <script>
+            function agregarCasilla(casillasId) {
+                var div = document.createElement("div");
+                div.innerHTML = '<input type="text" name="casillas[]">';
+                //div.innerHTML = '<input type="text" name="' + casillasId + '[]">';
+                document.getElementById(casillasId).appendChild(div);
+            }
+        </script>
+    </body>
+</html>

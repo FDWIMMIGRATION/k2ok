@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WhatsApp Web Template</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/whatsapp.css">
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 99vh;
+        }
+        </style>
+    </head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="google" value="notranslate"/>
+    <body>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        {% if permiso != 'SOPORTE' %}
+            <script>
+                $(function() {
+                    $("#datepicker").datepicker();
+                });
+            </script>
+
+            <div class="conversation-list">
+                <div class="conversation active">
+                    <div class="form-block1" >
+                        <a type="submit" name="cerrar" href="{{ url_for('logout') }}" class="boton_cerrar">Cerrar APP</a>
+                        <a type="submit" href="/prueba3?{{ usuario }}" class="boton_regresar">Administrativo</a>
+                    </div>
+
+                    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                    <script>
+                        $(function() {
+                            $("#datepicker").datepicker();
+                        });
+                    </script>
+                    
+                    {% if perm_agen != 'NO' %}    
+                        <div class="form-block1" >
+                            <button class="boton_regresar" onclick="abrirVentana()">Crear Agenda</button>
+                            <div id="miVentana" class="ventana-flotante">
+                                <h4 style="color: darkcyan;"> Ingrese el dia de la agenda</h4>
+                                <div class="contenido-ventana">
+                                    <form action="{{ url_for('home_2') }}" method="POST">
+                                        <input type="text" id="datepicker" name="fecha">
+                                        <input style="background-color: rgba(88, 194, 144, 0.767); border: 0px; border-radius: 3px;" type="submit" value="Enviar" name="fecha_agenda">
+                                        <input type="hidden" name="from_number_rediri" value="{{ usuario }}">
+                                    </form>
+                                    <button class="boton_regresar" onclick="cerrarVentana()">Cerrar ventana</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-block1" >
+                            <form action= "{{ url_for('home_2') }}" method="POST" >
+                                <input type="text" id="search" name="query" placeholder="Buscar">
+                                <ul id="results"></ul>
+                            </form>
+                        </div>
+                    <div class="form-block3" style="display: block;">
+                        <span>Agenda</span>
+                    </div>
+                    <div class="form-block2"  style="display: block;">
+                        {% for from_number_user, lista_hora in sel_age_pa.items() %}
+                            <form action="{{ url_for('home_2') }}" method="POST">
+                                {% for item in lista_hora %}
+                                    {% if usuario == item[3]  %}
+                                        <button type="submit" name="phone_number" id="boton_selec_user" value="{{ from_number_user }}" >{{ from_number_user }}
+                                            <span>Hora: {{ item[1] }}:00</span>
+                                            <br>
+                                            {% for clien2, client2 in nombre_clien.items() %}
+                                                {% if number2 == from_number_user %}
+                                                    {% for cliente_ in client2 %}
+                                                        <span><strong>{{ item[2] }}</strong></span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </button>
+                                        <form id="my-form" method="POST" action="{{ url_for('home_2') }}">
+                                            <input type="hidden" name="tipo_mensaje" value="{{ item[0] }}">
+                                            <input type="hidden" name="prueba_2" value="{{ item[1] }}">
+                                            <input type="hidden" name="index__cols" value="{{ item[2] }}">
+                                            {% if item[0] == 'PENDIENTE' %}
+                                                <div style="display: flex; align-items: center;">
+                                                    <select style="background-color: rgba(231, 154, 140, 0.767); border: 0px; border-radius: 3px; margin-right: 10px;" name="r__modificar">
+                                                        <option value="">Modificar</option>
+                                                        <option value="Eliminar">Eliminar</option>
+                                                        <option value="Confirmar">Confirmar</option>
+                                                    </select>
+                                                    <button style="width: 25px; background-color: rgba(158, 231, 140, 0.767); border: 0px; border-radius: 3px;" type="submit" name="ok_button__confirmar" id="double_click_button">OK</button>
+                                                </div>
+                                            {% endif %}
+                                        </form>
+                                    {% endif %}
+                                {% endfor %}
+                            </form>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="form-block3" style="display: block;">
+                        <span>Redireccionados</span>
+                    </div>
+                    <div class="form-block4"  id="boton_selec_user" style="display: block;">
+                        {% for from_number, lista_hora in selec_redire.items() %}
+                            <form action="{{ url_for('home_2') }}" method="POST">
+                                {% for item in lista_hora %}
+                                    {% if usuario == item[2]  %}
+                                        <button type="submit" name="phone_number" value="{{ from_number }}">{{ from_number }}
+                                            <span>{{ item[1] }}</span>
+                                            <br>
+                                            {% for number2, mensaj2 in nombre_clien.items() %}
+                                                {% if number2 == from_number %}
+                                                    {% for mensaje in mensaj2 %}
+                                                        <span><strong>{{ mensaje.0 }}</strong></span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </button>
+                                    {% endif %}  
+                                {% endfor %}
+                            </form>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="part-2">
+                {% for from_number2, mensajes_usuario2 in msj2.items() %}
+                    <div class="chat-window">
+                        <div class="card_2_panel" style="margin-right: 1px;">
+                            <div class="card-header">
+                                <h3 style="margin-top: 0px; margin-bottom: 0px;">{{ from_number2 }}</h3>
+                                {% for number2, mensaj2 in nombre_clien.items() %}
+                                    {% if number2 == from_number2 %}
+                                        {% for mensaje in mensaj2 %}
+                                            <h2 style="margin-top: 0px; margin-bottom: 0px;">{{ mensaje.0 }}</h2>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="chat-container">
+                                {% for tipo_or2, mensaje_texto2, fecha_hora2 in mensajes_usuario2 %}
+                                    {% if tipo_or2 == 'msj' %}
+                                        <div class="chat-message incoming">
+                                            <span class="message">{{ mensaje_texto2 }}</span>
+                                            <span class="time">{{ fecha_hora2.strftime('%H:%M') }}</span>
+                                        </div>
+                                    {% elif tipo_or2 == 'res' %}
+                                        <div class="chat-message_2 outgoing">
+                                            <span class="message">{{ mensaje_texto2 }}</span>
+                                            <span class="time">{{ fecha_hora2.strftime('%H:%M') }}</span>
+                                        </div>
+                                    {% elif tipo_or2 == 'url_li' %}
+                                        <div class="chat-message_3 incoming_2">
+                                            <span class="message">Multimedia</span>
+                                            <span class="message_3">
+                                                <a href="/descargar/{{ mensaje_texto2 | urlize }}" target="_blank" download>ARCHIVO</a>
+                                            </span>
+                                            <span class="time">{{ fecha_hora2.strftime('%H:%M') }}</span>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="reply-container">
+                                <form id="message-form-{{ from_number2 }}" method="POST" action="{{ url_for('save_message2') }}" onsubmit="sendMessage(event, '{{ from_number2 }}')">
+                                    <input type="text" id="message-input-{{ from_number2 }}" name="message" placeholder="Escribe tu respuesta aquí">
+                                    <input type="hidden" id="from-number-input-{{ from_number2 }}" name="from_number2" value="{{ from_number2 }}">
+                                </form>
+                                <form id="message-form-{{ from_number2 }}" method="POST" action="{{ url_for('home_2') }}">
+                                    <input type="hidden" name="from_number_rediri" value="{{ from_number2 }}">
+                                    <div class="select-wrapper">
+                                        <select name="tipo_redirigir_usr">
+                                            <option value="">Redirigir Cliente</option>
+                                            {% for numero, nombre_usuario in selec_usu.items() %}
+                                                {% for item in nombre_usuario %}
+                                                    <option value="{{ numero }}">Area: {{ item[1] }} Funcionario:{{ item[0] }}</option>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </select>
+                                        <div>
+                                            <button type="submit" name="ok_button_redirec" class = "button_ok" >OK</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="my-form" method="POST" action="{{ url_for('home_2') }}">
+                                    <input type="hidden" name="from_number2" value="{{ from_number2 }}">
+                                    <div class="select-wrapper">
+                                        <select name="tipo_formulario">
+                                            <option value="">Formularios</option>
+                                            {% for nombre_formulario, formularios_a in form1.items() %}
+                                                <option value="{{ nombre_formulario }}">{{ nombre_formulario }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div>
+                                            <button type="submit" name="ok_button_formulario" class="button_ok"  id="double_click_button">OK </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="message-form-{{ from_number2 }}" method="POST" action="{{ url_for('home_2') }}">
+                                    <input type="hidden" name="from_number_rediri_agenda" value="{{ from_number2 }}">
+                                    <div class="select-wrapper">
+                                        <select name="tipo_redirigir_usr_agenda">
+                                            <option value="">Agenda</option>
+                                            {% for numero, nombre_usuario in agend_a.items() %}
+                                                {% for item in nombre_usuario %}
+                                                    <option value="{{ numero }}">Fecha {{ item[0] }} Hora:{{ item[1] }}:00 {{ item[2] }} {{ item[3] }}</option>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </select>
+                                        <div>
+                                            <button type="submit" name="ok_button_agenda" class = "button_ok" >OK</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="part-3">
+                {% for from_number2, mensajes_usuario2 in msj2.items() %}
+                    <div class="chat-window">
+                        <div class="card_2_panel" style="margin-right: 1px;">
+                            <div class="card-header_2">
+                                <form id="message-form-{{ from_number2 }}" method="POST" action="{{ url_for('home_2') }}">
+                                    <h2>FORMULARIOS</h2>
+                                    <span>Estado: bot </span>
+                                </form>
+                            </div>
+                            <div class="chat-container">
+                                {% for rta, mensaj2 in respt_form.items() %}
+                                    {% for mensaje in mensaj2 %}
+                                        <div class="chat-message incoming">
+                                            <span class="message">{{ mensaje.1 }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                            <div class="reply-container">
+                                <form id="message-form-{{ from_number2 }}" method="POST" action="{{ url_for('home_2') }}" onsubmit="sendMessageForm2(event, '{{ from_number2 }}')">
+                                    <input type="text" id="message-input-{{ from_number2 }}-form2" name="message" placeholder="Escribe tu respuesta aquí">
+                                    <input type="hidden" id="from-number-input-3{{ from_number2 }}" name="from_number2" value="{{ from_number2 }}">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="part-4">
+                {% for etiqueta, resultados in eti_app_m.items() %}
+                    <div class="chat-container">
+                        {% for item in resultados %}
+                            <div class="select-wrapper2">
+                                <div class="chat-message incoming">
+                                    <span class="message"><strong>{{ item[1] }}:</strong> {{ item[0] }}</span>
+                                </div>
+                                <form id="my-form" method="POST" action="{{ url_for('home_2') }}">
+                                    <input type="hidden" name="mensaje_texto2" value="{{ item[1] }}">
+                                    <input type="hidden" name="from_number2" value="{{ item[2] }}">
+                                    <input type="hidden" name="index_cols" value="{{ item[3] }}">
+                                    <select name="tipo_respuesta_etiqueta_modificar">
+                                        <option value="">Modirficar</option>
+                                        <option value="Editar">Editar</option>
+                                        <option value="Eliminar">Eliminar</option>
+                                    </select>
+                                    <div>
+                                        <button type="submit" name="ok_button_etiqueta_editar" class="button_ok"  id="double_click_button">OK </button>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% else %}		
+			    <h1 style = "color:aliceblue; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Sin permiso en este modulo </h1>
+		    {% endif %}
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+        <ul id="results"></ul>
+        <script>
+        function sendMessage(event, fromNumber2) {
+            event.preventDefault(); // Evita que el formulario se envíe de manera predeterminada
+            const message = document.getElementById("message-input-" + fromNumber2).value;
+            const fromNumberInput = document.getElementById("from-number-input-" + fromNumber2);
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "{{ url_for('save_message2') }}", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    location.reload(); // Actualiza la página después de enviar el mensaje
+                }
+            };
+            xhr.send("message=" + encodeURIComponent(message) + "&from_number=" + encodeURIComponent(fromNumberInput.value));
+            document.getElementById("message-input-" + fromNumber).value = ""; // Borra el contenido del campo de entrada
+        }
+
+        function sendMessageForm2(event, fromNumber2) {
+            event.preventDefault();
+            const message = document.getElementById("message-input-" + fromNumber2 + "-form2").value;
+            const fromNumberInput = document.getElementById("from-number-input-3" + fromNumber2).value;
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "{{ url_for('home_2') }}", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    location.reload();
+                }
+            };
+            xhr.send("message=" + encodeURIComponent(message) + "&from_number2=" + encodeURIComponent(fromNumberInput));
+            document.getElementById("message-input-" + fromNumber2).value = "";
+        }
+        window.addEventListener('beforeunload', function() {
+            fetch('/logout', { method: 'POST', credentials: 'include' });
+        });
+        // Variable para controlar si la página está inactiva
+        var paginaInactiva = false;
+
+
+        // Evento que se dispara cuando la visibilidad de la página cambia
+        document.addEventListener("visibilitychange", function() {
+        // Actualizar el estado de la página (activa o inactiva)
+        paginaInactiva = document.hidden;
+        });
+
+        // Variable para llevar la cuenta de los clicks
+        let clickCount = 0;
+        // Función que maneja el evento de click del botón
+        function handleButtonClick() {
+            clickCount++;
+            if (clickCount === 2) {
+                // Ejecutar la acción equivalente a dos clicks
+                console.log("Botón presionado dos veces.");
+                // Restablecer el contador de clicks
+                clickCount = 0;
+            }
+        }
+        // Obtener el botón por su id y agregar un evento click
+        const button = document.getElementById('double_click_button');
+        button.addEventListener('click', handleButtonClick);
+
+
+        var searchInput = document.getElementById('search');
+        var resultsList = document.getElementById('results');
+        searchInput.addEventListener('input', function() {
+            var query = searchInput.value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/search?query=' + encodeURIComponent(query));
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var results = JSON.parse(xhr.responseText);
+                    showResults(results);
+                } else {
+                    console.log('Error al buscar resultados');
+                }
+            };
+            xhr.send();
+        });
+
+        function showResults(results) {
+        resultsList.innerHTML = '';
+        results.forEach(function(result) {
+            var button = document.createElement('button');
+            button.textContent = result;
+            button.value = result; // Assign the result to the button's value attribute
+            button.addEventListener('click', function() {
+            var selectedValue = this.value; // Get the selected value from the button
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/adm1z', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('Selected item sent successfully');
+                }
+            };
+            var data = 'selected_value=' + encodeURIComponent(selectedValue);
+            xhr.send(data);
+            });
+            resultsList.appendChild(button);
+        });
+        }
+        
+        function abrirVentana() {
+            document.getElementById("miVentana").style.display = "block";
+        }
+        function cerrarVentana() {
+            document.getElementById("miVentana").style.display = "none";
+        }
+        </script>
+    </body>
+</html>

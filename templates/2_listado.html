@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>_Inicio_app</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+    </head>
+    <body class="body_2">
+        <h1 style = "color:aliceblue; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);" >Bienvenido</h1>
+
+            <h2 style = "color:aliceblue; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">{{ usuario }} {{ permisos }}</h2>
+                <br>
+        {% if permisos != 'CONSULTORIA' %}
+            <a href="/463nd4?{{ usuario }}" class="boton" >Call Center</a>
+                <br>
+        {% endif %}
+
+        {% if permisos != 'SOPORTE' %}
+            <a href="/adm1z?{{ usuario }}" class="boton" >Consultoria</a>
+                <br>
+        {% endif %}
+
+        {% if permisos != 'SOPORTE' %}
+            {% if permisos != 'CONSULTORIA' %}
+                <a href="/c0nt16?{{ usuario }}" class="boton" >Configuracion</a>
+                    <br>
+            {% endif %}
+        {% endif %}
+
+        {% if permisos != 'SOPORTE' %}
+            {% if permisos != 'CONSULTORIA' %}
+                <a href="/ENTRENAMSJ?{{ usuario }}" class="boton" >Entrena msj</a>
+                    <br>
+                        <br>
+                            <br>
+            {% endif %}
+        {% endif %}
+            <br>
+
+        <a href="{{ url_for('logout') }}" class="boton">Cerrar APP</a>
+    </body>
+    <script>
+        window.addEventListener('beforeunload', function() {
+            fetch('/logout', { method: 'POST', credentials: 'include' });
+        });
+    </script>
+</html>

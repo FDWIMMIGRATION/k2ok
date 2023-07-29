@@ -1,0 +1,21 @@
+
+# Utiliza la imagen oficial de MySQL como base
+FROM mysql:8.0
+
+# Copia los archivos SQL con los datos previos
+COPY ./whatsappmessages.sql /docker-entrypoint-initdb.d/
+
+# Configura la contraseña de root para MySQL (puedes cambiar "mi_password" por la contraseña que desees)
+ENV MYSQL_ROOT_PASSWORD=****ADM1
+
+# Si necesitas crear otros usuarios, agrega comandos SQL aquí
+# Ejemplo:
+ ENV MYSQL_USER=root
+ ENV MYSQL_PASSWORD=****ADM1
+ ENV MYSQL_DATABASE=whatsapp_messages
+ COPY ./mi_usuario.sql /docker-entrypoint-initdb.d/
+
+# Si necesitas realizar más configuraciones, agrega comandos SQL aquí
+
+# Puerto expuesto para acceder a MySQL (por defecto, el puerto 3306)
+EXPOSE 3306
